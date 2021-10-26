@@ -17,12 +17,13 @@ public class MapSpawner : MonoBehaviour
 
     void Start() {
         tilePrefab.transform.localScale = new Vector3(tileSize, tileSize, tileSize);
+        tilePrefab.SetActive(true);
         Vector2 halfedMapSize = new Vector2(mapSize.x / 2, mapSize.y / 2);
+        print(halfedMapSize);
         float halfedTileSize = tileSize / 2;
-        for (float x = -halfedMapSize.x - halfedTileSize; x < mapSize.x + halfedTileSize; x++) {
-            for (float y = -halfedMapSize.y - halfedTileSize; y < mapSize.y + halfedTileSize; y++) {
+        for (float x = -halfedMapSize.x + halfedTileSize; x < halfedMapSize.x + halfedTileSize; x++) {
+            for (float y = -halfedMapSize.y + halfedTileSize; y < halfedMapSize.y + halfedTileSize; y++) {
                 GameObject genTile = Instantiate(tilePrefab, new Vector3(x, y, 0), new Quaternion(0, 0, 0, 0));
-                genTile.enabled = true;
                 if((Mathf.Pow(x+2, 2) + Mathf.Pow(y-4, 2)) <= 20){
                     genTile.GetComponent<SpriteRenderer>().sprite = tileSprites[1].sprite;
                 }else if((Mathf.Pow(x-4, 2) + Mathf.Pow(y+3, 2)) <= 20){
@@ -33,15 +34,6 @@ public class MapSpawner : MonoBehaviour
             }
         }
     }
-
-    //a function that creates grid of tiles with a width of mapSize.x and a height of mapSize.y. each tile is a tilePrefab. each tile is a child of the MapSpawner object. the tilePrefab have a width and height of tileSize. the grid of tiles are cented around the origin
-
-    //create a function that instanciates a 2darray of tiles with a x of mapSize.x and a y of mapSize.y
-
-    //a function that creates grid of tiles with a width of mapSize.x and a height of mapSize.y. each tile is a tilePrefab. each tile is a child of the MapSpawner object. the tilePrefab have a width and height of tileSize. the grid of tiles are cented around the origin
-
-
-
 
 }
 
