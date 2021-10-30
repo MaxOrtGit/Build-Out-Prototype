@@ -40,6 +40,7 @@ public class TileMaster : MonoBehaviour
         
         //if q is held delete covered
         if (Input.GetKey(KeyCode.Q)) {
+            print("Q pressed");
             Destroy(covered);
             covered = null;
         }

@@ -30,5 +30,14 @@ public class Miner : MonoBehaviour
             oreCount++;
         }
     }
+    private void OnMouseDown() {
+        
+        //if q is held delete covered
+        if (Input.GetKey(KeyCode.Q)) {
+            print("Miner deleted");
+            parentTile.GetComponent<TileMaster>().covered = null;
+            Destroy(gameObject);
+        }
+    }
     
 }
