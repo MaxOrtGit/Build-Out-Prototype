@@ -157,8 +157,8 @@ MonoBehaviour:
   tilePrefab: {fileID: 8243433186400946521, guid: 2b305753e4b89f148afbe18e298a57d6, type: 3}
   tileSprites:
   - sprite: {fileID: 21300000, guid: 38de7065eb26f2947b3eaba3e92df8bd, type: 3}
-  - sprite: {fileID: 21300000, guid: 718f1c15b3d7441d1a9b3eb8017c3427, type: 3}
   - sprite: {fileID: 21300000, guid: f2e407dc3c4ef4a43977406f5e676e2d, type: 3}
+  - sprite: {fileID: 21300000, guid: 718f1c15b3d7441d1a9b3eb8017c3427, type: 3}
 --- !u!4 &262018632
 Transform:
   m_ObjectHideFlags: 0

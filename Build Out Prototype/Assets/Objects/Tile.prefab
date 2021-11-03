@@ -126,5 +126,6 @@ MonoBehaviour:
   crafter: {fileID: 729711920379341324, guid: 0ac255708bc5e41558ad85045bba5689, type: 3}
   belt: {fileID: 8889344029099481319, guid: 2bca2fbcc5e26834ba5aa42bbb34a26a, type: 3}
   tileType: 0
+  covered: {fileID: 0}
   masterMapSpawner: {fileID: 0}
   mapPosition: {x: 0, y: 0}

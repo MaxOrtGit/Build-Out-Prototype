@@ -30,19 +30,17 @@ public class MapSpawner : MonoBehaviour
         int mapx = 0;
         int mapy = 0;
         for (float x = -halfedMapSize.x + halfedTileSize; x < halfedMapSize.x + halfedTileSize; x++) {
-            mapx++;
             mapy = 0;
             List<GameObject> yList = new List<GameObject>();
             for (float y = -halfedMapSize.y + halfedTileSize; y < halfedMapSize.y + halfedTileSize; y++) {
-                mapy++;
                 GameObject genTile = Instantiate(tilePrefab, new Vector3(x, y, 0), new Quaternion(0, 0, 0, 0), tileParent.transform);
                 
                 yList.Add(genTile);
 
-                if((Mathf.Pow(x+2, 2) + Mathf.Pow(y-4, 2)) <= 20){
+                if((Mathf.Pow(x-4, 2) + Mathf.Pow(y+3, 2)) <= 20){
                     genTile.GetComponent<SpriteRenderer>().sprite = tileSprites[1].sprite;
                     genTile.GetComponent<TileMaster>().tileType = 1;
-                }else if((Mathf.Pow(x-4, 2) + Mathf.Pow(y+3, 2)) <= 20){
+                }else if((Mathf.Pow(x+2, 2) + Mathf.Pow(y-4, 2)) <= 20){
                     genTile.GetComponent<SpriteRenderer>().sprite = tileSprites[2].sprite;
                     genTile.GetComponent<TileMaster>().tileType = 2;
                 } else {
@@ -51,10 +49,11 @@ public class MapSpawner : MonoBehaviour
                 }
                 genTile.GetComponent<TileMaster>().masterMapSpawner = this;
                 genTile.GetComponent<TileMaster>().mapPosition = new Vector2Int(mapx, mapy);
+                mapy++;
             }
             tileMap.Add(yList);
+            mapx++;
         }
-        print(tileMap.Count);
     }
 
 }

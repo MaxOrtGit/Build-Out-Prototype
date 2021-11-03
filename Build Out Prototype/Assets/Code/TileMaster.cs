@@ -12,34 +12,35 @@ public class TileMaster : MonoBehaviour
     public int tileType = 0;
 
 
-    //non serialized
-    [System.NonSerialized]
     public GameObject covered;
     public MapSpawner masterMapSpawner;
     public Vector2Int mapPosition;
 
-    private void OnMouseDown() {
-        
-        //1 is up 2 is left 3 is down 4 is right
-        int direction = 0;
-        if (Input.GetKey(KeyCode.W))
+
+    int direction = 0;
+
+    // When W,A,S,D is pressed, save direction
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.W))
         {
             direction = 1;
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             direction = 2;
         }
-        else if (Input.GetKey(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             direction = 3;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             direction = 4;
         }
+    }
 
-
+    private void OnMouseDown() {
 
         //add miner to tile if V is held if tiletype equals 1 or 2 and covered is null
         if (Input.GetKey(KeyCode.V) && (tileType == 1 || tileType == 2) && covered == null) {
