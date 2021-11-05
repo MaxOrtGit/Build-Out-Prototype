@@ -21,12 +21,19 @@ public class Belt : MonoBehaviour
     
     //1 is up 2 is left 3 is down 4 is right
     public int direction;
+    public int offset = 1;
 
     public void Start() {
         //set time since move to time
+        Debug.Log(Time.time);
+
         timeSeinceMove = Time.time % moveTime;
+
+        Debug.Log(timeSeinceMove);
+
         if((mapPosition.x + mapPosition.y) % 2 == 0) {
-            timeSeinceMove /= 2;
+            timeSeinceMove += moveTime / 2;
+            offset = 2;
         }
         
     }
@@ -36,8 +43,8 @@ public class Belt : MonoBehaviour
 
         timeSeinceMove += Time.deltaTime;
         if(timeSeinceMove >= moveTime){
-            timeSeinceMove -= moveTime;
             GiveItem();
+            timeSeinceMove -= moveTime;
         }
         itemOverlay = transform.GetChild(0).gameObject;
         //change alpha of itemOverlay from 0f to 1f over itemOverlayFadeSpeed seconds
@@ -68,6 +75,7 @@ public class Belt : MonoBehaviour
     }
 
     public void GiveItem(){
+        // print("give item " + offset + " timeSeinceMove " + timeSeinceMove + " time.time " + Time.time);
         if(items.Count > 0){
             GameObject tileDir = null;
             switch(direction){
