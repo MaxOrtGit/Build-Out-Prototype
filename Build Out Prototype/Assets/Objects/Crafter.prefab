@@ -122,3 +122,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21585513b61e4ee4a24673d06bc6e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  items: 
+  recipes:
+  - materials:
+    - {x: 2, y: 1}
+    results:
+    - {x: 3, y: 6}
+  - materials:
+    - {x: 2, y: 2}
+    results:
+    - {x: 4, y: 3}
+  - materials:
+    - {x: 2, y: 3}
+    results:
+    - {x: 5, y: 2}
+  - materials:
+    - {x: 4, y: 12}
+    - {x: 3, y: 8}
+    results:
+    - {x: 6, y: 1}
+  - materials:
+    - {x: 3, y: 24}
+    - {x: 4, y: 6}
+    - {x: 1, y: 3}
+    results:
+    - {x: 7, y: 1}
+  - materials:
+    - {x: 3, y: 12}
+    - {x: 5, y: 8}
+    - {x: 6, y: 1}
+    - {x: 1, y: 10}
+    results:
+    - {x: 7, y: 4}
+  parentTile: {fileID: 0}
+  mapPosition: {x: 0, y: 0}
+  direction: 0

@@ -21,19 +21,15 @@ public class Belt : MonoBehaviour
     
     //1 is up 2 is left 3 is down 4 is right
     public int direction;
-    public int offset = 1;
 
     public void Start() {
         //set time since move to time
-        Debug.Log(Time.time);
 
         timeSeinceMove = Time.time % moveTime;
 
-        Debug.Log(timeSeinceMove);
 
         if((mapPosition.x + mapPosition.y) % 2 == 0) {
             timeSeinceMove += moveTime / 2;
-            offset = 2;
         }
         
     }
@@ -47,7 +43,6 @@ public class Belt : MonoBehaviour
             timeSeinceMove -= moveTime;
         }
         itemOverlay = transform.GetChild(0).gameObject;
-        //change alpha of itemOverlay from 0f to 1f over itemOverlayFadeSpeed seconds
         if (alpha < 1f && items.Count > 0) {
             alpha += Time.deltaTime / itemOverlayFadeSpeed;
             itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, alpha);
@@ -99,6 +94,17 @@ public class Belt : MonoBehaviour
 
             if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>() != null){
                 tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(items[0]);
+                items.RemoveAt(0);
+
+                alpha = 0f;
+                itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                if(items.Count > 0){
+                    itemOverlay.GetComponent<SpriteRenderer>().sprite = itemOverlay.GetComponent<ItemOverlay>().itemSprites[items[0]];
+                } else {
+                    itemOverlay.GetComponent<SpriteRenderer>().sprite = null;
+                }
+            } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
+                tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(items[0]);
                 items.RemoveAt(0);
 
                 alpha = 0f;
