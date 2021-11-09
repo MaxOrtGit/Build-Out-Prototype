@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2768406051798064235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8889344029099481313}
@@ -99,6 +99,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 21300000, guid: 2228013800db94c07906c6ff6d97c243, type: 3}
   - {fileID: 21300000, guid: 11900fd3c62f444f689f25768df05fef, type: 3}
+  - {fileID: 21300000, guid: 8e0d31fc47f8c42559fe103c2cdc00c6, type: 3}
+  - {fileID: 21300000, guid: acab5a091eac84f939b4c1b7c58f5fc6, type: 3}
+  - {fileID: 21300000, guid: 6569537be8ef34b94a82288d5b8c3bdc, type: 3}
+  - {fileID: 21300000, guid: fdfee25dbd8ac45a38b905300fb17f67, type: 3}
+  - {fileID: 21300000, guid: 8ab5034a11e6c447abac7ca436404785, type: 3}
 --- !u!1 &8889344029099481319
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +228,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: 
+  itemOverlay: {fileID: 0}
+  itemOverlayFadeSpeed: 0.1
+  alpha: 0
+  moveTime: 0.5
+  timeSeinceMove: 0
+  itemLimit: 2
   parentTile: {fileID: 0}
   mapPosition: {x: 0, y: 0}
   direction: 0

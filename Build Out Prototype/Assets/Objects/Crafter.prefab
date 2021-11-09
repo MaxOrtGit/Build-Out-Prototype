@@ -123,37 +123,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: 
+  products: 
   recipes:
-  - materials:
+  - name: Bolt
+    materials:
     - {x: 2, y: 1}
     results:
     - {x: 3, y: 6}
-  - materials:
+    activated: 0
+  - name: Rod
+    materials:
     - {x: 2, y: 2}
     results:
     - {x: 4, y: 3}
-  - materials:
+    activated: 0
+  - name: Plaste
+    materials:
     - {x: 2, y: 3}
     results:
     - {x: 5, y: 2}
-  - materials:
+    activated: 0
+  - name: Frame
+    materials:
     - {x: 4, y: 12}
     - {x: 3, y: 8}
     results:
     - {x: 6, y: 1}
-  - materials:
+    activated: 0
+  - name: Power Cell
+    materials:
     - {x: 3, y: 24}
     - {x: 4, y: 6}
     - {x: 1, y: 3}
     results:
     - {x: 7, y: 1}
-  - materials:
+    activated: 0
+  - name: Alt Power Cell
+    materials:
     - {x: 3, y: 12}
     - {x: 5, y: 8}
     - {x: 6, y: 1}
     - {x: 1, y: 10}
     results:
     - {x: 7, y: 4}
+    activated: 0
+  craftTime: 4
   parentTile: {fileID: 0}
   mapPosition: {x: 0, y: 0}
   direction: 0

@@ -8,12 +8,14 @@ public class Belt : MonoBehaviour
     public List<int> items = new List<int>();
 
     public GameObject itemOverlay;
-    public float itemOverlayFadeSpeed = 0.1f;
+    float itemOverlayFadeSpeed = 0.2f;
 
     public float alpha = 0f;
 
     public float moveTime = 0.5f;
     public float timeSeinceMove = 0f;
+
+    public int itemLimit = 2;
 
 
     public GameObject parentTile;
@@ -24,9 +26,10 @@ public class Belt : MonoBehaviour
 
     public void Start() {
         //set time since move to time
+        itemOverlay = transform.GetChild(0).gameObject;
+        itemOverlay.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         timeSeinceMove = Time.time % moveTime;
-
 
         if((mapPosition.x + mapPosition.y) % 2 == 0) {
             timeSeinceMove += moveTime / 2;
@@ -42,7 +45,6 @@ public class Belt : MonoBehaviour
             GiveItem();
             timeSeinceMove -= moveTime;
         }
-        itemOverlay = transform.GetChild(0).gameObject;
         if (alpha < 1f && items.Count > 0) {
             alpha += Time.deltaTime / itemOverlayFadeSpeed;
             itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, alpha);
@@ -62,11 +64,15 @@ public class Belt : MonoBehaviour
         }
     }
 
-    public void AddItem(int item) {
+    public bool AddItem(int item) {
+        if (items.Count == itemLimit) {
+            return false;
+        }
         items.Add(item);
         if(items.Count == 1){
            itemOverlay.GetComponent<SpriteRenderer>().sprite = itemOverlay.GetComponent<ItemOverlay>().itemSprites[item];
         }
+        return true;
     }
 
     public void GiveItem(){
@@ -93,15 +99,16 @@ public class Belt : MonoBehaviour
             }
 
             if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>() != null){
-                tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(items[0]);
-                items.RemoveAt(0);
+                if(tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(items[0])){
+                    items.RemoveAt(0);
 
-                alpha = 0f;
-                itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
-                if(items.Count > 0){
-                    itemOverlay.GetComponent<SpriteRenderer>().sprite = itemOverlay.GetComponent<ItemOverlay>().itemSprites[items[0]];
-                } else {
-                    itemOverlay.GetComponent<SpriteRenderer>().sprite = null;
+                    alpha = 0f;
+                    itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                    if(items.Count > 0){
+                        itemOverlay.GetComponent<SpriteRenderer>().sprite = itemOverlay.GetComponent<ItemOverlay>().itemSprites[items[0]];
+                    } else {
+                        itemOverlay.GetComponent<SpriteRenderer>().sprite = null;
+                    }
                 }
             } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
                 tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(items[0]);

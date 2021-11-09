@@ -122,3 +122,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3332c2b07115948198fb2ca8443d776a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mineingSpeed: 1
+  ores: 
+  oreCount: 0
+  mineTime: 1
+  giveTime: 0.5
+  mapPosition: {x: 0, y: 0}
+  direction: 0

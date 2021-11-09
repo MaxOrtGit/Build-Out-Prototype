@@ -10,6 +10,14 @@ public class Miner : MonoBehaviour
     public List<int> ores = new List<int>();
     public int oreCount = 0;
 
+
+    float timeSeinceMine = 0f;
+    public float mineTime = 0.5f;
+
+
+    float timeSeinceGive = 0f;
+    public float giveTime = 0.5f;
+
     //non serialized
     [System.NonSerialized]
     public GameObject parentTile;
@@ -19,10 +27,36 @@ public class Miner : MonoBehaviour
     public int direction;
 
 
-    private void Start() {
+    public void Start() {
+        //set time since craft to time
+
+        timeSeinceMine = Time.time % mineTime;
+
+        if((mapPosition.x + mapPosition.y) % 2 == 0) {
+            timeSeinceMine += mineTime / 2;
+        }
+
+        timeSeinceGive = Time.time % giveTime;
+
+        if((mapPosition.x + mapPosition.y) % 2 == 0) {
+            timeSeinceGive += giveTime / 2;
+        }
         
-        InvokeRepeating("Mine", 0, 1.0f);
-        InvokeRepeating("DropItem", 0.5f, 1.0f);
+    }
+
+    //update
+    public void Update() {
+
+        timeSeinceMine += Time.deltaTime;
+        if(timeSeinceMine >= mineTime){
+            Mine();
+            timeSeinceMine %= mineTime;
+        }
+        timeSeinceGive += Time.deltaTime;
+        if(timeSeinceGive >= giveTime){
+            GiveItem();
+            timeSeinceGive %= giveTime;
+        }
     }
 
     public void Mine(){
@@ -41,7 +75,7 @@ public class Miner : MonoBehaviour
         }
     }
 
-    public void DropItem(){
+    public void GiveItem(){
         //get tile from parentTile.GetComponent<TileMaster>().tileMap based on direction and print it
         if(oreCount > 0){
             GameObject tileDir = null;
@@ -65,7 +99,12 @@ public class Miner : MonoBehaviour
             }
 
             if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>() != null){
-                tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(ores[0]);
+                if(tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(ores[0])){
+                    ores.RemoveAt(0);
+                    oreCount--;
+                }
+            }if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
+                tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(ores[0]);
                 ores.RemoveAt(0);
                 oreCount--;
             }
