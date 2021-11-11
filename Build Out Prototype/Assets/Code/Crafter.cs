@@ -18,6 +18,7 @@ public class Crafter : MonoBehaviour
     float timeSeinceGive = 0f;
     public float giveTime = 0.5f;
 
+
     public GameObject parentTile;
     public Vector2Int mapPosition;
     
@@ -172,9 +173,15 @@ public class Crafter : MonoBehaviour
                 if(tileDir.GetComponent<TileMaster>().covered.GetComponent<Belt>().AddItem(products[0])){
                     products.RemoveAt(0);
                 }
-            }if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
+            } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
                 tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(products[0]);
                 products.RemoveAt(0);
+            } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered == null && products[0] == 7){
+                    Debug.Log("? hazard");
+                if(tileDir.GetComponent<TileMaster>().DropHazardLvl(1)){
+                    Debug.Log("Dropped hazard");
+                    products.RemoveAt(0);
+                }
             }
         }   
 

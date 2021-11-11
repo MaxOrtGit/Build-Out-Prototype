@@ -9,6 +9,8 @@ public class MapSpawner : MonoBehaviour
     
     public float tileSize = 8f;
 
+    public int maxHazardLvl;
+
     public Vector2 mapSize = new Vector2(18, 10);
 
     public GameObject tilePrefab;
@@ -18,6 +20,10 @@ public class MapSpawner : MonoBehaviour
     public Tile[] tileSprites;
 
     void Start() {
+
+        maxHazardLvl = (int)(Mathf.Max(mapSize.x / 2, mapSize.y / 2) - 1);
+
+
         //create empty gameobject called Tiles to hold all tiles
         GameObject tileParent = new GameObject("Tiles");
 
@@ -49,6 +55,13 @@ public class MapSpawner : MonoBehaviour
                 }
                 genTile.GetComponent<TileMaster>().masterMapSpawner = this;
                 genTile.GetComponent<TileMaster>().mapPosition = new Vector2Int(mapx, mapy);
+                int genTileDFC = (int)Mathf.Max(Mathf.Abs(x),  Mathf.Abs(y));
+                genTile.GetComponent<TileMaster>().distanceFromCenter = genTileDFC;
+
+                genTile.GetComponent<TileMaster>().hazardLvl = genTileDFC;
+                genTile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f - ((float)genTileDFC/ maxHazardLvl), 1f - ((float)genTileDFC/ maxHazardLvl), 1f);
+                genTile.GetComponent<TileMaster>().mapSpawner = this;
+
                 mapy++;
             }
             tileMap.Add(yList);

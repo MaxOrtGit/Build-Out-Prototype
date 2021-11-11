@@ -103,7 +103,7 @@ public class Miner : MonoBehaviour
                     ores.RemoveAt(0);
                     oreCount--;
                 }
-            }if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
+            } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered != null && tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>() != null){
                 tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(ores[0]);
                 ores.RemoveAt(0);
                 oreCount--;

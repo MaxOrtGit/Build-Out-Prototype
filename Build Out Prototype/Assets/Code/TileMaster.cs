@@ -8,16 +8,25 @@ public class TileMaster : MonoBehaviour
     public GameObject crafter;
     public GameObject belt;
 
+
     //0 = empty, 1 = energy, 2 = stone
     public int tileType = 0;
+
+    public int distanceFromCenter;
+
+    public int hazardLvl;
+
 
 
     public GameObject covered;
     public MapSpawner masterMapSpawner;
     public Vector2Int mapPosition;
+    
+    public MapSpawner mapSpawner;
 
 
     int direction = 0;
+
 
     // When W,A,S,D is pressed, save direction
     void Update()
@@ -41,9 +50,8 @@ public class TileMaster : MonoBehaviour
     }
 
     private void OnMouseDown() {
-
         //add miner to tile if V is held if tiletype equals 1 or 2 and covered is null
-        if (Input.GetKey(KeyCode.V) && (tileType == 1 || tileType == 2) && covered == null) {
+        if (hazardLvl == 0 && Input.GetKey(KeyCode.V) && (tileType == 1 || tileType == 2) && covered == null) {
             //position changed by -1 in z axis
             Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
 
@@ -75,7 +83,7 @@ public class TileMaster : MonoBehaviour
         }
 
         //add crafter to tile if B is held
-        if (Input.GetKey(KeyCode.B) && covered == null) {
+        if (hazardLvl == 0 && Input.GetKey(KeyCode.B) && covered == null) {
             //position changed by -1 in z axis
             Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
             
@@ -108,7 +116,7 @@ public class TileMaster : MonoBehaviour
         }
 
         //add belt to tile if C is held
-        if (Input.GetKey(KeyCode.C) && covered == null) {
+        if (hazardLvl == 0 && Input.GetKey(KeyCode.C) && covered == null) {
             //position changed by -1 in z axis
             Vector3 newPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1);
             
@@ -140,4 +148,18 @@ public class TileMaster : MonoBehaviour
             }
         }
     }
+
+    public bool DropHazardLvl(int by) {
+        if(hazardLvl != 0){
+            hazardLvl -= by;
+            if(hazardLvl <= 0){
+                hazardLvl = 0;
+            }
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f - (float)((float)hazardLvl / mapSpawner.maxHazardLvl), 1, 1, 1);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

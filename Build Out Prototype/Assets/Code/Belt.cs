@@ -121,6 +121,19 @@ public class Belt : MonoBehaviour
                 } else {
                     itemOverlay.GetComponent<SpriteRenderer>().sprite = null;
                 }
+            } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered == null && items[0] == 7){
+                if(tileDir.GetComponent<TileMaster>().DropHazardLvl(1)){
+                    
+                    items.RemoveAt(0);
+
+                    alpha = 0f;
+                    itemOverlay.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0f);
+                    if(items.Count > 0){
+                        itemOverlay.GetComponent<SpriteRenderer>().sprite = itemOverlay.GetComponent<ItemOverlay>().itemSprites[items[0]];
+                    } else {
+                        itemOverlay.GetComponent<SpriteRenderer>().sprite = null;
+                    }
+                }
             }
 
 

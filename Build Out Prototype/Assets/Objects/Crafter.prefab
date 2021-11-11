@@ -167,7 +167,14 @@ MonoBehaviour:
     results:
     - {x: 7, y: 4}
     activated: 0
+  - name: Cheat Power Cell
+    materials:
+    - {x: 2, y: 1}
+    results:
+    - {x: 7, y: 1}
+    activated: 0
   craftTime: 4
+  giveTime: 0.5
   parentTile: {fileID: 0}
   mapPosition: {x: 0, y: 0}
   direction: 0
