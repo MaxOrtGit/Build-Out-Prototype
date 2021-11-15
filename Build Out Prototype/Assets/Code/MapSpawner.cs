@@ -6,7 +6,22 @@ using UnityEngine;
 
 public class MapSpawner : MonoBehaviour
 {
-    
+    //create dictionary of Ids and items
+    //0 = empty, 1 = energy, 2 = stone, 3 = bolt, 4 = rod, 5 = plate, 6 = frame, 7 = power cell
+    [System.NonSerialized]
+    public static Dictionary<int, string> itemDictionary = new Dictionary<int, string>()
+    {
+        {0, "empty"},
+        {1, "energy"},
+        {2, "stone"},
+        {3, "bolt"},
+        {4, "rod"},
+        {5, "plate"},
+        {6, "frame"},
+        {7, "power cell"}
+    };
+
+
     public float tileSize = 8f;
 
     public int maxHazardLvl;
@@ -19,7 +34,18 @@ public class MapSpawner : MonoBehaviour
 
     public Tile[] tileSprites;
 
+    public static GameObject craftingText;
+    public static GameObject itemText;
+    public static GameObject productText;
+    public GameObject setCraftingText;
+    public GameObject setItemText;
+    public GameObject setProductText;
+
     void Start() {
+        craftingText = setCraftingText;
+        itemText = setItemText;
+        productText = setProductText;
+
 
         maxHazardLvl = (int)(Mathf.Max(mapSize.x / 2, mapSize.y / 2) - 1);
 

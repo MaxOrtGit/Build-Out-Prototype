@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crafter : MonoBehaviour
-{
+public class Crafter : MonoBehaviour{
 
 
     public List<int> items = new List<int>();
     public List<int> products = new List<int>();
 
+    public List<Vector2Int> neatItems = new List<Vector2Int>();
+    public List<Vector2Int> neatProducts = new List<Vector2Int>();
+
     public List<Recipe> recipes = new List<Recipe>();
 
     float timeSeinceCraft = 0f;
     public float craftTime = 3f;
+
+    float timeSeinceHover = 0f;
 
 
     float timeSeinceGive = 0f;
@@ -66,8 +70,8 @@ public class Crafter : MonoBehaviour
         foreach(Recipe recipe in recipes) {
             if(recipe.activated) {
                 bool craftable = true;
-                foreach(Vector2 material in recipe.materials) {
-                    if(GetRepetitions(material) < material.y) {
+                foreach(Vector2Int material in recipe.materials) {
+                    if(GetRepetitions(material.x, items) < material.y) {
                         craftable = false;
                     }
                 }
@@ -75,6 +79,7 @@ public class Crafter : MonoBehaviour
                     foreach(Vector2Int material in recipe.materials) {
                         for(int i = 0; i < material.y; i++) {
                             items.Remove(material.x);
+
                         }
                     }
 
@@ -88,10 +93,10 @@ public class Crafter : MonoBehaviour
         }
     }
 
-    public int GetRepetitions(Vector2 material) {
+    public int GetRepetitions(int material, List<Vector2Int> list) {
         int count = 0;
-        foreach(int item in items) {
-            if(item == material.x) {
+        foreach(int item in list) {
+            if(item == material) {
                 count++;
             }
         }
@@ -141,6 +146,69 @@ public class Crafter : MonoBehaviour
         }
 
     }
+
+    private void OnMouseEnter() {
+        updateNeat();
+    }
+
+    //When Object is hovered over start a countdown for 2 seconds using timeSeinceHover
+    private void OnMouseOver() {
+        timeSeinceHover += Time.deltaTime;
+        if(timeSeinceHover >= 1f) {
+            //change the text in parentTile.GetComponent<TileMaster>().mapSpawner.craftingText to the activated recipes
+            string recipeNames = "";
+            foreach(Recipe recipe in recipes) {
+                if(recipe.activated) {
+                    recipeNames += recipe.name + ", ";
+                }
+            }
+            if(recipeNames != "") {
+            recipeNames = recipeNames.Substring(0, recipeNames.Length - 2);
+            } else {
+                recipeNames = "No Recipes Connected";
+            }
+            MapSpawner.craftingText.GetComponent<UnityEngine.UI.Text>().text = recipeNames;
+        }
+    }
+
+    //when mouse is no longer hovering over object stop the countdown and reset the text
+    private void OnMouseExit() {
+        timeSeinceHover = 0f;
+        MapSpawner.craftingText.GetComponent<UnityEngine.UI.Text>().text = "";
+    }
+
+
+    public void updateNeat() {
+        neatItems.Clear();
+        
+        foreach(int item in items) {
+            bool unique = true;
+            foreach(Vector2Int neatItem in neatItems) {
+                if(neatItem.x == item) {
+                    unique = false;
+                }
+            }
+            if(unique) {
+                neatItems.Add(new Vector2Int(item, GetRepetitions(item)));
+            }
+        }
+
+        neatProducts.Clear();
+        
+        foreach(int product in products) {
+            bool unique = true;
+            foreach(Vector2Int neatProduct in neatProducts) {
+                if(neatProduct.x == product) {
+                    unique = false;
+                }
+            }
+            if(unique) {
+                neatProducts.Add(new Vector2Int(product, GetRepetitions(products)));
+            }
+        }
+    }
+
+
 
     public void AddItem(int item) {
         items.Add(item);
