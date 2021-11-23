@@ -25,6 +25,7 @@ public class MapSpawner : MonoBehaviour
     public float tileSize = 8f;
 
     public int maxHazardLvl;
+    public bool hazardEnabled = true;
 
     public Vector2 mapSize = new Vector2(18, 10);
 
@@ -84,8 +85,10 @@ public class MapSpawner : MonoBehaviour
                 int genTileDFC = (int)Mathf.Max(Mathf.Abs(x),  Mathf.Abs(y));
                 genTile.GetComponent<TileMaster>().distanceFromCenter = genTileDFC;
 
-                genTile.GetComponent<TileMaster>().hazardLvl = genTileDFC;
-                genTile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f - ((float)genTileDFC/ maxHazardLvl), 1f - ((float)genTileDFC/ maxHazardLvl), 1f);
+                if(hazardEnabled){
+                    genTile.GetComponent<TileMaster>().hazardLvl = genTileDFC;
+                    genTile.GetComponent<SpriteRenderer>().color = new Color(1f, 1f - ((float)genTileDFC/ maxHazardLvl), 1f - ((float)genTileDFC/ maxHazardLvl), 1f);
+                }
                 genTile.GetComponent<TileMaster>().mapSpawner = this;
 
                 mapy++;
@@ -94,7 +97,6 @@ public class MapSpawner : MonoBehaviour
             mapx++;
         }
     }
-
 }
 
 [System.Serializable]

@@ -31,8 +31,10 @@ public class Crafter : MonoBehaviour{
     public GameObject parentTile;
     public Vector2Int mapPosition;
     
-    //1 is up 2 is left 3 is down 4 is right
+    //1 is up 2 is left 3 is down 4 is right 5 is up left 6 is left down 7 is right down 8 is right up
     public int direction;
+
+    public int lastDirection = 1;
 
 
     public void Start() {
@@ -414,6 +416,66 @@ public class Crafter : MonoBehaviour{
                 case 4:
                     //right
                     tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x + 1][mapPosition.y];
+                    break;
+                case 5:
+                    //up left
+                    switch(lastDirection){
+                        case 1:
+                            //up
+                            lastDirection = 2;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x][mapPosition.y + 1];
+                            break;
+                        case 2:
+                            //left
+                            lastDirection = 1;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x - 1][mapPosition.y];
+                            break;
+                    }
+                    break;
+                case 6:
+                    //left down
+                    switch(lastDirection){
+                        case 1:
+                            //left
+                            lastDirection = 2;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x - 1][mapPosition.y];
+                            break;
+                        case 2:
+                            //down
+                            lastDirection = 1;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x][mapPosition.y - 1];
+                            break;
+                    }
+                    break;
+                case 7:
+                    //down right
+                    switch(lastDirection){
+                        case 1:
+                            //down
+                            lastDirection = 2;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x][mapPosition.y - 1];
+                            break;
+                        case 2:
+                            //right
+                            lastDirection = 1;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x + 1][mapPosition.y];
+                            break;
+                    }
+                    break;
+                case 8:
+                    //right up
+                    switch(lastDirection){
+                        case 1:
+                            //right
+                            lastDirection = 2;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x + 1][mapPosition.y];
+                            break;
+                        case 2:
+                            //up
+                            lastDirection = 1;
+                            tileDir = parentTile.GetComponent<TileMaster>().masterMapSpawner.GetComponent<MapSpawner>().tileMap[mapPosition.x][mapPosition.y + 1];
+                            break;
+                    }
                     break;
             }
 

@@ -31,25 +31,66 @@ public class TileMaster : MonoBehaviour
     // When W,A,S,D is pressed, save direction
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            direction = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            direction = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            direction = 3;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            direction = 4;
-        }
+        //FindDirection();
+        
     }
 
+    private void FindDirection() {
+    //1 is up 2 is left 3 is down 4 is right 5 is up-left 6 is down-left 7 is down-right 8 is up-right
+        int totalHeld = 0;
+        if (Input.GetKey(KeyCode.W)) {
+            totalHeld++;
+            direction = 1;
+        }
+        if (Input.GetKey(KeyCode.A)) {
+            totalHeld++;
+            direction = 2;
+        }
+        if (Input.GetKey(KeyCode.S)) {
+            totalHeld++;
+            direction = 3;
+        }
+        if (Input.GetKey(KeyCode.D)) {
+            totalHeld++;
+            direction = 4;
+        }
+        Debug.Log(totalHeld);
+
+        if (totalHeld == 2) {
+            Debug.Log("You can't hold both directions");
+            if (Input.GetKeyDown(KeyCode.W)) {
+                if(Input.GetKeyDown(KeyCode.D)) {
+                    direction = 5;
+                } else if (Input.GetKeyDown(KeyCode.A)) {
+                    direction = 7;
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.S)) {
+                if (Input.GetKeyDown(KeyCode.D)) {
+                    direction = 6;
+                } else if (Input.GetKeyDown(KeyCode.A)) {
+                    direction = 8;
+                }
+            }
+        } else if (totalHeld == 3) {
+            if (!Input.GetKeyDown(KeyCode.W)) {
+                direction = 3;
+            } else if (!Input.GetKeyDown(KeyCode.A)) {
+                direction = 4;
+            } else if (!Input.GetKeyDown(KeyCode.S)) {
+                direction = 1;
+            } else if (!Input.GetKeyDown(KeyCode.D)) {
+                direction = 2;
+            }
+        } else if (totalHeld == 4) {
+            direction = 0;
+        }
+    }
+    
+
     private void OnMouseDown() {
+        FindDirection();
+        Debug.Log(direction);
         //add miner to tile if V is held if tiletype equals 1 or 2 and covered is null
         if (hazardLvl == 0 && Input.GetKey(KeyCode.V) && (tileType == 1 || tileType == 2) && covered == null) {
             //position changed by -1 in z axis
@@ -72,6 +113,7 @@ public class TileMaster : MonoBehaviour
                     newRotation = Quaternion.Euler(0, 0, 270);
                     break;
             }
+
             if(direction != 0) {
                 covered = Instantiate(miner, newPosition, newRotation);
                 covered.GetComponent<Miner>().parentTile = gameObject;
@@ -103,6 +145,18 @@ public class TileMaster : MonoBehaviour
                     break;
                 case 4:
                     newRotation = Quaternion.Euler(0, 0, 270);
+                    break;
+                case 5:
+                    newRotation = Quaternion.Euler(0, 0, 45);
+                    break;
+                case 6:
+                    newRotation = Quaternion.Euler(0, 0, 135);
+                    break;
+                case 7:
+                    newRotation = Quaternion.Euler(0, 0, 225);
+                    break;
+                case 8:
+                    newRotation = Quaternion.Euler(0, 0, 315);
                     break;
             }
 
