@@ -155,7 +155,7 @@ public class TileMaster : MonoBehaviour
             if(hazardLvl <= 0){
                 hazardLvl = 0;
             }
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f - (float)((float)hazardLvl / mapSpawner.maxHazardLvl), 1, 1, 1);
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f - (float)((float)hazardLvl / mapSpawner.maxHazardLvl), 1f - (float)((float)hazardLvl / mapSpawner.maxHazardLvl), 1);
             return true;
         } else {
             return false;

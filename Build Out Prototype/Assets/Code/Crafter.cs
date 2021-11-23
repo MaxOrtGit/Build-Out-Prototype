@@ -8,7 +8,7 @@ public class Crafter : MonoBehaviour{
     int craftingMode = 1;
 
     int lastCrafted = -1;
-    Vector2Int lastCraftedRatio = new Vector2Int(-1, -1);
+    List<Vector3Int> lastCraftedRatio = new List<Vector3Int>();
 
     public List<int> items = new List<int>();
     public List<int> products = new List<int>();
@@ -91,7 +91,7 @@ public class Crafter : MonoBehaviour{
 
             if(lastCrafted == -1) {
                 lastCrafted = activatedRecipes[0];
-            } else if (activatedRecipes.Count > 1) {
+            } else if (activatedRecipes.Count > 1 && lastCrafted != activatedRecipes[activatedRecipes.Count - 1]) {
                 lastCrafted = activatedRecipes[activatedRecipes.IndexOf(lastCrafted) + 1];
             } else {
                 lastCrafted = activatedRecipes[0];
@@ -99,20 +99,39 @@ public class Crafter : MonoBehaviour{
             recipe = recipes[lastCrafted];
 
         } else if(craftingMode == 2) {
-            if(lastCraftedRatio.x == -1) {
-                lastCraftedRatio = new Vector2Int(activatedRecipes[0], 1);
+            if(lastCraftedRatio.Count == 0 || lastCraftedRatio.Count != activatedRecipes.Count) {
+                for(int i = 0; i < activatedRecipes.Count; i++) {
+                    lastCraftedRatio.Add(new Vector3Int(activatedRecipes[i], 0, recipes[activatedRecipes[i]].results[0].y));
+                }
+                recipe = recipes[lastCraftedRatio[0].x];
+                lastCraftedRatio[0] = new Vector3Int(lastCraftedRatio[0].x, recipes[lastCraftedRatio[0].x].ratio, recipes[lastCraftedRatio[0].x].results[0].y);
             } else if(activatedRecipes.Count > 1) {
-                if(lastCraftedRatio.y < recipes[lastCraftedRatio.x].ratio) {
-                    lastCraftedRatio.y++;
-                } else {
-                    lastCraftedRatio.y = 1;
-                    lastCraftedRatio.x = activatedRecipes[activatedRecipes.IndexOf(lastCraftedRatio.x) + 1];
+                int lowest = lastCraftedRatio[0].y;
+                int lowestIndex = 0;
+                foreach(Vector3Int ratio in lastCraftedRatio) {
+                    if(lowest > ratio.y) {
+                        lowest = ratio.y;
+                        lowestIndex = lastCraftedRatio.IndexOf(ratio);
+                    }
+                }
+                lastCraftedRatio[lowestIndex] = new Vector3Int(lastCraftedRatio[lowestIndex].x, lastCraftedRatio[lowestIndex].y + recipes[lowestIndex].results[0].y, lastCraftedRatio[lowestIndex].z);
+                recipe = recipes[lowestIndex];
+                
+                //if all z's are bigger than the y's then subtract y's by all z's
+                bool allBigger = true;
+                foreach(Vector3Int ratio in lastCraftedRatio) {
+                    if(ratio.z < ratio.y) {
+                        allBigger = false;
+                    }
+                }
+                if(allBigger) {
+                    for(int i = 0; i < lastCraftedRatio.Count; i++) {
+                        lastCraftedRatio[i] = new Vector3Int(lastCraftedRatio[i].x, lastCraftedRatio[i].y - lastCraftedRatio[i].z, lastCraftedRatio[i].z );
+                    }
                 }
             } else {
-                lastCraftedRatio = new Vector2Int(activatedRecipes[0], 1);
+                recipe = recipes[lastCraftedRatio[0].x];
             }
-
-            recipe = recipes[lastCraftedRatio.x];
         }
 
 
@@ -154,7 +173,7 @@ public class Crafter : MonoBehaviour{
         
         //if Shift is held down
         if (Input.GetKey(KeyCode.LeftShift)) {
-            int numbHeld = -1;
+            int numbHeld = 1;
             //get numbHeld from keyboard 0-9
             if (Input.GetKey(KeyCode.Alpha0)) {
                 numbHeld = 10;
@@ -283,14 +302,18 @@ public class Crafter : MonoBehaviour{
         if(timeSeinceHover >= 1f) {
             updateNeat();
             //change the text in parentTile.GetComponent<TileMaster>().mapSpawner.craftingText to the activated recipes
-            string recipeNames = "Crafting Mode " + craftingMode + " ";
+            string recipeNames = "Crafting Mode " + craftingMode + ", ";
             foreach(Recipe recipe in recipes) {
                 if(recipe.activated) {
-                    recipeNames += recipe.name + " Ratio: " + recipe.ratio + ", ";
+                    recipeNames += recipe.name;
+                    if(craftingMode == 2) {
+                        recipeNames += " Ratio: " + recipe.ratio;
+                    }
+                    recipeNames += ", ";
                 }
             }
             if(recipeNames != "Crafting Mode " + craftingMode + " ") {
-            recipeNames = recipeNames.Substring(0, recipeNames.Length - 2);
+                recipeNames = recipeNames.Substring(0, recipeNames.Length - 2);
             } else {
                 recipeNames += "No Recipes Connected";
             }
@@ -402,7 +425,6 @@ public class Crafter : MonoBehaviour{
                 tileDir.GetComponent<TileMaster>().covered.GetComponent<Crafter>().AddItem(products[0]);
                 products.RemoveAt(0);
             } else if(tileDir != null && tileDir.GetComponent<TileMaster>().covered == null && products[0] == 7){
-                    Debug.Log("? hazard");
                 if(tileDir.GetComponent<TileMaster>().DropHazardLvl(1)){
                     Debug.Log("Dropped hazard");
                     products.RemoveAt(0);
